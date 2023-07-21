@@ -1,0 +1,86 @@
+Plan:
+
+- Look into:
+	- chevron
+	- jinja2?
+	- Mako?
+	- marko
+	- functools - partial
+	- prettyprint (graphviz)
+	- pygments for syntax highlighting
+	- ark (for examples)
+
+- Structure of my website
+
+
+1. Decide what the structure of my website will look like
+	- Title page
+	- Categories
+	- About me
+	- Entries
+	- topics under categories
+	- Other (look into it)
+
+	- embeded images/videos
+
+	- What is the ultimate file directory to look like when it's ready to publish
+
+2. Decide on templating
+	- What templatating language will we use (chevron/jinja2/mako)
+	- What templates will we need
+
+3. Decide on what options this site will have
+	- Why where we parsing yaml?
+	- What were we trying to convey with the json?
+	- We had options for:
+	- applying a template to a category
+	- number of posts
+	- directory path
+	- default template
+	- template for home page
+
+4. decide what the input directory will look like
+	- md files, but where?
+	- Main file
+	- sub directories
+	- where images?
+
+5. how do we convert .md to html?
+	- figure out how to parse
+
+6. Decide on the aesthetics of the website
+	- Simple CSS templates
+	- maybe http://motherfuckingwebsite.com/
+
+7. host website? Run like a "serve" command
+
+8. How to host this on salvoch.com
+
+
+===
+
+
+What's missing:
+	1. Logic for creating website structure
+	2. Main page logic for generating
+		- structure
+		- sub topics
+		- showing x number of posts
+	3. Each topic should have its own index page
+		- with all posts for that toipc & maybe some deets?
+	4. Templating
+		- Header/footer/layout (constant HTML)
+		- CSS
+	5. Top level main to run it (CLI tool)
+		- nested directories won't work (use pathlib parts?)
+		- proper CLI argument parsing (--build_directory, -f, etc)
+		- make it flexible between OSs
+		- write exceptions
+	6. Syntax highlighting 
+	7. images?
+	8. package program
+
+- run main.py
+	- find all md files in directory
+	- convert them to html
+
