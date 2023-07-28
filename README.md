@@ -67,7 +67,7 @@ A user will structure their notes in the following example layout. The index wil
 
 A user could specify very explicitly what the structure of their site shall be through a config.yml. With this solution the file structure is not important. In other solutions, you'd still have a config.yml, but this would specifcy optional things, like style.
 
-A user could generate a blank config file by running a command like `sitespider generate\_config_`, to make it easier for users.
+A user could generate a blank config file by running a command like `sitespider generate_config`, to make it easier for users.
 
 Example config.yml:
 
@@ -97,7 +97,7 @@ Example config.yml:
 * Logic for finding/placing images will be more complex on dev end
 * Must have logic for finding actual files, what if they are nested in directories?
   * Do we force the user to use the full extension name? Could get long and overly-configury?
-  * Or just have python "search" for a matching file name, could have conficts?
+  * Or just have python "search" for a matching file name in all project directories, could have conficts?
 * If you mispell a name, how do we handle that? Error/warning?
 
 ### 3. Have a header in the files describing what that file belongs to.
