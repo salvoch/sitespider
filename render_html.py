@@ -23,8 +23,9 @@ class Renderer():
         for category in self.config.categories:
             for category_name, post_list in category.items():
                 for post in post_list:
-                    html_dest = self.root / 'categories' / category_name / post.stem / '.html'
-                    convert_md_file_to_html(Path(post), html_dest)
+                    path_post = Path(post)
+                    html_dest = self.root / 'categories' / category_name / (path_post.stem + '.html')
+                    convert_md_file_to_html(path_post, html_dest)
 
     def render_category_index(self) -> None:
         '''Render the index.html files for each category'''

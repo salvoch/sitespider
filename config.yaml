@@ -1,5 +1,5 @@
 ---
-index: index.md
+index: test.md
 categories:
   - aws:
     - doingthingsinaws.md
@@ -7,7 +7,7 @@ categories:
   - haskell:
     - learningHaskell.md
   - python:
-    - making_a_static_site.md
-    - dataclasses.md
-    - someOtherThing.md
+    - examples/making_a_static_site.md
+    - examples/dataclasses.md
+    - examples/someOtherThing.md
 style: dark
