@@ -12,7 +12,7 @@ def make_directories(config: ConfigFile, root: str = "build") -> Path:
     /build directory where the script is running,
     if it already exists, skip it'''
 
-    #Create Path object
+    # Create Path object
     root_path = Path(root)
 
     # start clean, delete existing build
