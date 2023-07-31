@@ -12,22 +12,25 @@ def make_directories(config: ConfigFile, root: str = "build") -> Path:
     /build directory where the script is running,
     if it already exists, skip it'''
 
+    # Create Path object
+    root_path = Path(root)
+
     # start clean, delete existing build
     delete_directories(Path(root))
 
     # Create directories
-    Path(root).mkdir()
-    Path(root+"/images").mkdir()
-    Path(root+"/scripts").mkdir()
-    Path(root+"/styles").mkdir()
-    Path(root+"/categories").mkdir()
+    root_path.mkdir()
+    (root_path / "images").mkdir()
+    (root_path / "scripts").mkdir()
+    (root_path / "styles").mkdir()
+    (root_path / "categories").mkdir()
 
     # Create sub category directories
     for category in config.categories:
         cat_name: str = list(category.keys())[0]
-        Path(root+"/categories/"+cat_name).mkdir()
+        (root_path / 'categories' / cat_name).mkdir()
 
-    return Path(root)
+    return root_path
 
 
 def delete_directories(path: Path) -> None:
