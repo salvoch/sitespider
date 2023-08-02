@@ -6,15 +6,15 @@ from render_html import Renderer
 DEFAULT_OUTPUT_DIRECTORY = 'build'
 
 
-def main(output_root_directory: str = DEFAULT_OUTPUT_DIRECTORY) -> None:
+def main(output_build_directory: str = DEFAULT_OUTPUT_DIRECTORY) -> None:
     '''Execute the application'''
 
     # Create config and root paths
     config_file = parse_config_file()
-    root = make_directories(config_file, output_root_directory)
+    build_dir = make_directories(config_file, output_build_directory)
 
     # Render html
-    renderer = Renderer(config_file, root)
+    renderer = Renderer(config_file, build_dir)
     renderer.render_index()
     renderer.render_categories()
     renderer.render_category_index()

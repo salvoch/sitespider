@@ -84,3 +84,34 @@ What's missing:
 	- find all md files in directory
 	- convert them to html
 
+
+
+=== useful Pathlib.Path stuff
+
+g = Path('root')
+
+you can do things like
+
+p = g / 'images'
+
+which results in 
+
+p being root/images
+
+p.resolve() will give you the whole path (/user/ms/documents/orot/images)
+
+can do:
+q.exists()
+q.is_dir()
+
+open file
+
+with q.open() as f: f.read()
+
+Can convert between Path and PurePath
+
+Path(g), or PurePath(h)
+
+PurePath() are just strings, it has no concept of the file structure, but does windows/posix depending on OS
+
+Path() understands its file system, so it can delete/create files and directories, 

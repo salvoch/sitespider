@@ -7,30 +7,30 @@ from pathlib import Path
 from parse_config import ConfigFile
 
 
-def make_directories(config: ConfigFile, root: str = "build") -> Path:
+def make_directories(config: ConfigFile, build: str = "build") -> Path:
     '''Generate the directory structure, by default makes it in a
     /build directory where the script is running,
     if it already exists, skip it'''
 
     # Create Path object
-    root_path = Path(root)
+    build_path = Path(build)
 
     # start clean, delete existing build
-    delete_directories(Path(root))
+    delete_directories(build_path)
 
     # Create directories
-    root_path.mkdir()
-    (root_path / "images").mkdir()
-    (root_path / "scripts").mkdir()
-    (root_path / "styles").mkdir()
-    (root_path / "categories").mkdir()
+    build_path.mkdir()
+    (build_path / "images").mkdir()
+    (build_path / "scripts").mkdir()
+    (build_path / "styles").mkdir()
+    (build_path / "categories").mkdir()
 
     # Create sub category directories
     for category in config.categories:
         cat_name: str = list(category.keys())[0]
-        (root_path / 'categories' / cat_name).mkdir()
+        (build_path / 'categories' / cat_name).mkdir()
 
-    return root_path
+    return build_path
 
 
 def delete_directories(path: Path) -> None:
