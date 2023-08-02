@@ -6,14 +6,14 @@ from parse_config import ConfigFile
 class Renderer():
     '''Class that renders .md files to .html'''
 
-    def __init__(self, config: ConfigFile, root: Path) -> None:
+    def __init__(self, config: ConfigFile, build_path: Path) -> None:
         self.config = config
-        self.root = root
+        self.build_path = build_path
 
     def render_index(self) -> None:
         '''Render the main index file'''
 
-        html_dest = self.root / 'index.html'
+        html_dest = self.build_path / 'index.html'
         convert_md_file_to_html(Path(self.config.index), html_dest)
 
     def render_categories(self) -> None:
@@ -24,7 +24,7 @@ class Renderer():
             for category_name, post_list in category.items():
                 for post in post_list:
                     path_post = Path(post)
-                    html_dest = self.root / 'categories' / category_name / (path_post.stem + '.html')
+                    html_dest = self.build_path / 'categories' / category_name / (path_post.stem + '.html')
                     convert_md_file_to_html(path_post, html_dest)
 
     def render_category_index(self) -> None:
