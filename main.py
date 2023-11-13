@@ -5,7 +5,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from parse_config import parse_config_file
 from make_directories import make_directories
-from render_html import Renderer
+from render_html import render_main_index, render_category_index, render_note
 DEFAULT_OUTPUT_DIRECTORY = 'build'
 
 
@@ -88,11 +88,14 @@ def main(output_build_directory: str = DEFAULT_OUTPUT_DIRECTORY) -> None:
     print(f'categories = {categories}')
     print(f'site notes = {site_notes}')
 
-    # Render html
-    renderer = Renderer(config_file, build_dir)
-    renderer.render_index()
-    renderer.render_categories()
-    renderer.render_category_index()
+    # Render pages
+    render_main_index(index)  # Main Index
+
+    for category in categories:
+        render_category_index(category)  # Categories
+
+    for page in site_notes:
+        render_note(page)  # Site pages
 
 
 if __name__ == '__main__':
