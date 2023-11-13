@@ -1,29 +1,88 @@
-from main import MainIndex, CategoryIndex, SiteNote
+from abc import ABC, abstractmethod
+from pathlib import Path
 import pandoc
 from pandoc.types import Pandoc
+from strip_elements import PandocStripper, ImageReference
+DEFAULT_OUTPUT_DIRECTORY = 'build'
 
 
-def render_main_index(page: MainIndex) -> None:
-    '''Render the main index page.'''
-    ...
+class PageObject(ABC):
+    '''Generic page class'''
+
+    def __init__(self, md_path: Path, build_dir: str = DEFAULT_OUTPUT_DIRECTORY) -> None:
+        self.md_path: Path = md_path
+        self.build_dir: str = build_dir
+
+        self.title: str = self.__generate_title()
+        self.html_path: Path = self.__generate_html_path()
+
+        self.images: list[ImageReference] = []
+        self.pandoc_page: Pandoc | None = None
+
+    @abstractmethod
+    def __generate_title(self) -> str:
+        '''Generate title, strip it from the file, or use generic'''
+        ...
+
+    @abstractmethod
+    def __generate_html_path(self) -> Path:
+        '''Generate the destination path '''
+        ...
+
+    @abstractmethod
+    def render(self) -> None:
+        '''Render the page, save it under self.pandoc_page'''
+        ...
+
+    def __find_images(self) -> None:
+        '''Find all images in an .md file, save them in self.images'''
+        stripper = PandocStripper(self.md_path)
+        self.images = stripper.strip_local_image_locations()
+
+    def __move_images(self, page: Pandoc) -> None:
+        '''move images to the build directory'''
+        ...
+
+    def __update_image_ref(self, page: Pandoc) -> Pandoc:
+        '''Update the image references in a .md file to point to the new location under build/image
+        update self.pandoc_page (or return it?)'''
+        # Figure out a good structure for this.
+        ...
 
 
-def render_category_index(page: CategoryIndex) -> None:
-    '''Render the category index page.'''
-    ...
+class MainIndex(PageObject):
+    '''Class for the main index page'''
+
+    def __init__(self, md_path: Path, build_dir: str = DEFAULT_OUTPUT_DIRECTORY) -> None:
+        super().__init__(md_path, build_dir)
+        self.__generate_title()
+        self.__generate_html_path()
+
+    def __generate_title(self) -> str:
+        stripper = PandocStripper(self.md_path)
+        return stripper.strip_title()
+
+    def __generate_html_path(self) -> Path:
+        return Path(self.build_dir) / "index.html"
+
+    def render(self) -> None:
+        ...
 
 
-def render_note(page: SiteNote) -> None:
-    '''Render the site note page under a category'''
-    ...
+class CategoryIndex(PageObject):
+    '''Class for the category index pages'''
 
+    def __init__(self, md_path: Path, category_name: str, build_dir: str = DEFAULT_OUTPUT_DIRECTORY) -> None:
+        super().__init__(md_path, build_dir)
+        self.category_name = category_name
+        self.__generate_title()
+        self.__generate_html_path()
 
-def __move_images(page: MainIndex | SiteNote) -> None:
-    '''Look for images in a PageObject, move them to the build/image directory'''
-    ...
+    def __generate_title(self) -> str:
+        return self.category_name
 
+    def __generate_html_path(self) -> Path:
+        return Path(self.build_dir) / self.category_name / "index.html"
 
-def __update_image_ref(pandoc_file: Pandoc) -> Pandoc:
-    '''Update the image references in a .md file to point to the new location under build/image'''
-    # Figure out a good structure for this.
-    ...
+    def render(self) -> None:
+        ...

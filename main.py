@@ -6,15 +6,7 @@ from dataclasses import dataclass
 from parse_config import parse_config_file
 from make_directories import make_directories
 from render_html import render_main_index, render_category_index, render_note
-DEFAULT_OUTPUT_DIRECTORY = 'build'
 
-
-@dataclass
-class PageObject:
-    md_path: Path | None
-    html_path: Path
-    images: list[ImageReference]
-    title: str
 
 
 @dataclass(kw_only=True)
