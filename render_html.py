@@ -3,15 +3,14 @@ from pathlib import Path
 import pandoc
 from pandoc.types import Pandoc
 from strip_elements import PandocStripper, ImageReference
-DEFAULT_OUTPUT_DIRECTORY = 'build'
 
 
 class PageObject(ABC):
     '''Generic page class'''
 
-    def __init__(self, md_path: Path, build_dir: str = DEFAULT_OUTPUT_DIRECTORY) -> None:
+    def __init__(self, md_path: Path, build_dir: Path) -> None:
         self.md_path: Path = md_path
-        self.build_dir: str = build_dir
+        self.build_dir: Path = build_dir
 
         self.title: str = self.generate_title()
         self.html_path: Path = self.generate_html_path()
@@ -53,7 +52,7 @@ class PageObject(ABC):
 class MainIndex(PageObject):
     '''Class for the main index page'''
 
-    def __init__(self, md_path: Path, build_dir: str = DEFAULT_OUTPUT_DIRECTORY) -> None:
+    def __init__(self, md_path: Path, build_dir: Path) -> None:
         super().__init__(md_path, build_dir)
 
     def generate_title(self) -> str:
@@ -61,17 +60,27 @@ class MainIndex(PageObject):
         return stripper.strip_title()
 
     def generate_html_path(self) -> Path:
-        return Path(self.build_dir) / "index.html"
+        return self.build_dir / "index.html"
 
     def render(self) -> None:
         ...
+
+    def __str__(self) -> str:
+        return_str = f'''Page Type: MainIndex
+        md_path = {self.md_path}
+        build_dir = {self.build_dir}
+        title = {self.title}
+        html_path = {self.html_path}
+        images = {self.images}
+        pandoc_page = {self.pandoc_page}'''
+        return return_str
 
 
 class CategoryIndex(PageObject):
     '''Class for the category index pages'''
 
-    def __init__(self, category_name: str, build_dir: str = DEFAULT_OUTPUT_DIRECTORY) -> None:
-        self.build_dir: str = build_dir
+    def __init__(self, category_name: str, build_dir: Path) -> None:
+        self.build_dir: Path = build_dir
         self.category_name = category_name
 
         self.title: str = self.generate_title()
@@ -83,30 +92,50 @@ class CategoryIndex(PageObject):
         return self.category_name
 
     def generate_html_path(self) -> Path:
-        return Path(self.build_dir) / self.category_name / "index.html"
+        return self.build_dir / self.category_name / "index.html"
 
     def render(self) -> None:
         ...
+
+    def __str__(self) -> str:
+        return_str = f'''Page Type: CategoryIndex
+        category_name = {self.category_name}
+        build_dir = {self.build_dir}
+        title = {self.title}
+        html_path = {self.html_path}
+        pandoc_page = {self.pandoc_page}'''
+        return return_str
 
 
 class SiteNote(PageObject):
     '''Class for the .md note files, each belongs to a category'''
 
-    def __init__(self, md_path: Path, category_name: str, build_dir: str = DEFAULT_OUTPUT_DIRECTORY) -> None:
-        super().__init__(md_path, build_dir)
+    def __init__(self, md_path: Path, category_name: str, build_dir: Path) -> None:
         self.category_name = category_name
+        super().__init__(md_path, build_dir)
 
     def generate_title(self) -> str:
         stripper = PandocStripper(self.md_path)
         return stripper.strip_title()
 
     def generate_html_path(self) -> Path:
-        return Path(self.build_dir) / self.category_name / (self.md_path.stem+".html")
+        return self.build_dir / self.category_name / (self.md_path.stem+".html")
 
     def render(self) -> None:
         ...
 
+    def __str__(self) -> str:
+        return_str = f'''Page Type: SiteNote
+        md_path = {self.md_path}
+        category_name = {self.category_name}
+        build_dir = {self.build_dir}
+        title = {self.title}
+        html_path = {self.html_path}
+        images = {self.images}
+        pandoc_page = {self.pandoc_page}'''
+        return return_str
+
 
 if __name__ == '__main__':
-    index = MainIndex(Path('test.md'))
+    index = MainIndex(Path('test.md'), Path('build'))
     print(index)
