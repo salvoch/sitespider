@@ -1,3 +1,15 @@
+TODO :
+1. Change render_html to take in PageObjects
+	1. This will provide source, dest, image references, title
+	2. That should be all you need to render every single page
+	3. write function that takes img references and moves them
+	4. write function (or with above) that changes image references in file
+	5. write function for rendering all
+		1. MainIndex (+images)
+		2. CategoryIndex (+images)
+		3. SiteNote
+
+
 Plan:
 
 - Look into:

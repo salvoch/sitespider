@@ -1,51 +1,29 @@
+from main import MainIndex, CategoryIndex, SiteNote
 import pandoc
-from pathlib import Path
-from parse_config import ConfigFile
+from pandoc.types import Pandoc
 
 
-class Renderer():
-    '''Class that renders .md files to .html'''
-
-    def __init__(self, config: ConfigFile, build_path: Path) -> None:
-        self.config = config
-        self.build_path = build_path
-
-    def render_index(self) -> None:
-        '''Render the main index file'''
-
-        html_dest = self.build_path / 'index.html'
-        convert_md_file_to_html(Path(self.config.index), html_dest)
-
-    def render_categories(self) -> None:
-        '''Render the files under each category'''
-
-        # Render each post under each category
-        for category in self.config.categories:
-            for category_name, post_list in category.items():
-                for post in post_list:
-                    path_post = Path(post)
-                    html_dest = self.build_path / 'categories' / category_name / (path_post.stem + '.html')
-                    convert_md_file_to_html(path_post, html_dest)
-
-    def render_category_index(self) -> None:
-        '''Render the index.html files for each category'''
-
-        pass
+def render_main_index(page: MainIndex) -> None:
+    '''Render the main index page.'''
+    ...
 
 
-def convert_md_file_to_html(md_path: Path, html_destination: Path) -> None:
-    '''Convert single .md file to HTML. Must provide Path objects'''
+def render_category_index(page: CategoryIndex) -> None:
+    '''Render the category index page.'''
+    ...
 
-    # Check to make sure file exists
-    if not md_path.exists():
-        raise Exception  # TODO - create actual exception
 
-    # Check to make sure .md file was passed
-    if md_path.suffix != ".md":
-        raise Exception  # TODO - create actual exception
+def render_note(page: SiteNote) -> None:
+    '''Render the site note page under a category'''
+    ...
 
-    # Convert file to html
-    with md_path.open() as file:
-        read_file = file.read()
-        pan_doc = pandoc.read(read_file, format="markdown")
-        pandoc.write(pan_doc, html_destination, "html")
+
+def __move_images(page: MainIndex | SiteNote) -> None:
+    '''Look for images in a PageObject, move them to the build/image directory'''
+    ...
+
+
+def __update_image_ref(pandoc_file: Pandoc) -> Pandoc:
+    '''Update the image references in a .md file to point to the new location under build/image'''
+    # Figure out a good structure for this.
+    ...
