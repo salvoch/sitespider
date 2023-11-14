@@ -154,7 +154,7 @@ class SiteNote(PageObject):
         return stripper.strip_title()
 
     def generate_html_path(self) -> Path:
-        return self.build_dir / self.category_name / (self.md_path.stem+".html")
+        return self.build_dir / "categories" / self.category_name / (self.md_path.stem+".html")
 
     def render(self) -> None:
         # Convert file to html
