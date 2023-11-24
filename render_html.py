@@ -60,9 +60,28 @@ class PageObject(ABC):
         stripper = PandocStripper(self.md_path)
         self.images = stripper.strip_local_image_locations()
 
-    def move_images(self, page: Pandoc) -> None:
-        '''move images to the build directory'''
-        ...
+    def move_images(self) -> None:
+        '''Move images to the build directory'''
+
+        # TODO
+        # - Figure out how to handle images with properties:
+        # - Do properties show up on pandoc?
+        # - : examples/amogus.jpg#thumbnail
+        for image in self.images:
+            # Create destination directory and copy file over
+            base_dir = self.build_dir / 'images'
+            source_dirs = Path('/'.join(self.html_path.parts[1:-1]))
+            source_file = self.html_path.stem
+            dest_dirs = Path('/'.join(Path(image.md_target).parts[:-1]))
+
+            full_directory = base_dir / source_dirs / source_file / dest_dirs
+            final_destination = base_dir / source_dirs / source_file / image.md_target
+
+            print(f"DIRECTORY: {str(full_directory)}")
+            print(f"FINALPATH: {str(final_destination)}")
+            print("---")
+            os.makedirs(full_directory, exist_ok=True)
+            shutil.copyfile(image.md_target, final_destination)
 
     def update_image_ref(self, page: Pandoc) -> Pandoc:
         '''Update the image references in a .md file to point to the new location under build/image
@@ -90,6 +109,8 @@ class MainIndex(PageObject):
         with self.md_path.open() as file:
             read_file = file.read()
             self.pandoc_page = pandoc.read(read_file, format="markdown")
+            self.find_images()
+            self.move_images()
 
             # Get list of images
             # Move images
@@ -162,7 +183,8 @@ class SiteNote(PageObject):
         with self.md_path.open() as file:
             read_file = file.read()
             self.pandoc_page = pandoc.read(read_file, format="markdown")
-
+            self.find_images()
+            self.move_images()
             # Get list of images
             # Move images
             # Update image locations
